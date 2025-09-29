@@ -1,14 +1,23 @@
 package com.example.library.entity;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+// La importación de org.springframework.data.annotation.Id ha sido eliminada.
 
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "loans")
 public class Loan {
-    @Id
+
+    @Id // Usa jakarta.persistence.Id (importado con jakarta.persistence.*)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
