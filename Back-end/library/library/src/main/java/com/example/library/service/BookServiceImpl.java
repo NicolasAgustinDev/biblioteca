@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 @Transactional
 public class BookServiceImpl implements BookService {
-
     private final BookRepository repo;
     private final BookMapper mapper;
 
@@ -25,7 +24,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookResponseDTO create(BookRequestDTO dto) {
         Book book = mapper.toEntity(dto);
-        book.setAvailableCopies(dto.getTotalCopies()); // al crear, disponibles = totales
+        book.setAvailableCopies(dto.getTotalCopies());
         return mapper.toDto(repo.save(book));
     }
 
@@ -51,9 +50,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void delete(Long id) {
-        if (!repo.existsById(id)) {
-            throw new RuntimeException("Libro no encontrado");
-        }
         repo.deleteById(id);
     }
 }

@@ -1,11 +1,10 @@
-package com.example.library.service.impl;
+package com.example.library.service;
 
 import com.example.library.dto.ClientRequestDTO;
 import com.example.library.dto.ClientResponseDTO;
 import com.example.library.entity.Client;
 import com.example.library.mapper.ClientMapper;
 import com.example.library.repository.ClientRepository;
-import com.example.library.service.ClientService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

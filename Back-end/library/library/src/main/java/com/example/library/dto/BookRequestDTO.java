@@ -2,7 +2,9 @@ package com.example.library.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
+@Data
 public class BookRequestDTO {
     @NotBlank
     private String title;
