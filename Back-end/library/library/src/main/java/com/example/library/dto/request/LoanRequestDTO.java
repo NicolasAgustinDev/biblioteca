@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoanRequestDTO {
-    // getters y setters
     @NotNull
     private Long bookId;
     @NotNull

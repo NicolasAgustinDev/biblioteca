@@ -12,14 +12,11 @@ import com.example.library.repository.ClientRepository;
 import com.example.library.repository.LoanRepository;
 import com.example.library.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class LoanServiceImpl implements LoanService {
 
     private final LoanRepository loanRepository;
@@ -28,10 +25,8 @@ public class LoanServiceImpl implements LoanService {
     private final UserRepository userRepository;
     private final LoanMapper loanMapper;
 
-    public LoanServiceImpl(LoanRepository loanRepository,
-                           BookRepository bookRepository,
-                           ClientRepository clientRepository,
-                           UserRepository userRepository,
+    public LoanServiceImpl(LoanRepository loanRepository, BookRepository bookRepository,
+                           ClientRepository clientRepository, UserRepository userRepository,
                            LoanMapper loanMapper) {
         this.loanRepository = loanRepository;
         this.bookRepository = bookRepository;
@@ -43,13 +38,13 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public LoanResponseDTO createLoan(LoanRequestDTO dto) {
         Book book = bookRepository.findById(dto.getBookId())
-                .orElseThrow(() -> new RuntimeException("Book not found"));
+                .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
         Client client = clientRepository.findById(dto.getClientId())
-                .orElseThrow(() -> new RuntimeException("Client not found"));
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
         User user = null;
         if (dto.getUserId() != null) {
             user = userRepository.findById(dto.getUserId())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         }
 
         Loan loan = new Loan();
@@ -58,29 +53,38 @@ public class LoanServiceImpl implements LoanService {
         loan.setUser(user);
         loan.setLoanDate(LocalDate.now());
         loan.setDueDate(dto.getDueDate());
-        loan.setStatus("Activo");
+        loan.setStatus("ACTIVO");
 
-        Loan savedLoan = loanRepository.save(loan);
-        return loanMapper.toDto(savedLoan);
+        return loanMapper.toDto(loanRepository.save(loan));
     }
 
     @Override
-    public List<LoanResponseDTO> getAllLoans() {
-        return loanRepository.findAll()
-                .stream()
-                .map(loanMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public LoanResponseDTO getLoanById(Long id) {
+    public LoanResponseDTO returnLoan(Long id) {
         Loan loan = loanRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Loan not found"));
-        return loanMapper.toDto(loan);
+                .orElseThrow(() -> new RuntimeException("Préstamo no encontrado"));
+
+        loan.setStatus("DEVUELTO");
+        loan.setReturnDate(LocalDate.now());
+
+        return loanMapper.toDto(loanRepository.save(loan));
     }
 
     @Override
-    public void deleteLoan(Long id) {
+    public List<LoanResponseDTO> getAll() {
+        return loanRepository.findAll()
+                .stream().map(loanMapper::toDto).toList();
+    }
+
+    @Override
+    public LoanResponseDTO getById(Long id) {
+        return loanRepository.findById(id)
+                .map(loanMapper::toDto)
+                .orElseThrow(() -> new RuntimeException("Préstamo no encontrado"));
+    }
+
+    @Override
+    public void delete(Long id) {
         loanRepository.deleteById(id);
     }
 }
+
