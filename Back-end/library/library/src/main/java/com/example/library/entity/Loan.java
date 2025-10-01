@@ -5,36 +5,40 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-// La importación de org.springframework.data.annotation.Id ha sido eliminada.
-
 import java.time.LocalDate;
 
-@Getter
 @Setter
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "loans")
 public class Loan {
 
-    @Id // Usa jakarta.persistence.Id (importado con jakarta.persistence.*)
+    // Getters y Setters
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "book_id")
+    // Relación con Book
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "client_id")
+    // Relación con Client
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
-    @ManyToOne
+    // Relación con User
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user; // quién registró el préstamo
+    private User user;
 
     private LocalDate loanDate;
     private LocalDate dueDate;
     private LocalDate returnDate;
-    private String status; // ACTIVE, RETURNED, LATE
+
+    private String status; // "Activo", "Devuelto"
+
 }

@@ -1,11 +1,12 @@
 package com.example.library.service;
 
-import com.example.library.dto.LoanRequestDTO;
-import com.example.library.dto.LoanResponseDTO;
+import com.example.library.dto.request.LoanRequestDTO;
+import com.example.library.dto.response.LoanResponseDTO;
 import com.example.library.entity.Book;
 import com.example.library.entity.Client;
 import com.example.library.entity.Loan;
 import com.example.library.entity.User;
+import com.example.library.mapper.LoanMapper;
 import com.example.library.repository.BookRepository;
 import com.example.library.repository.ClientRepository;
 import com.example.library.repository.LoanRepository;
@@ -15,36 +16,40 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class LoanServiceImpl implements LoanService {
-    private final LoanRepository loanRepo;
-    private final BookRepository bookRepo;
-    private final ClientRepository clientRepo;
-    private final UserRepository userRepo;
 
-    public LoanServiceImpl(LoanRepository l, BookRepository b, ClientRepository c, UserRepository u) {
-        this.loanRepo = l;
-        this.bookRepo = b;
-        this.clientRepo = c;
-        this.userRepo = u;
+    private final LoanRepository loanRepository;
+    private final BookRepository bookRepository;
+    private final ClientRepository clientRepository;
+    private final UserRepository userRepository;
+    private final LoanMapper loanMapper;
+
+    public LoanServiceImpl(LoanRepository loanRepository,
+                           BookRepository bookRepository,
+                           ClientRepository clientRepository,
+                           UserRepository userRepository,
+                           LoanMapper loanMapper) {
+        this.loanRepository = loanRepository;
+        this.bookRepository = bookRepository;
+        this.clientRepository = clientRepository;
+        this.userRepository = userRepository;
+        this.loanMapper = loanMapper;
     }
 
     @Override
-    public LoanResponseDTO create(LoanRequestDTO dto) {
-        Book book = bookRepo.findById(dto.getBookId())
-                .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
-        if (book.getAvailableCopies() <= 0)
-            throw new RuntimeException("No hay ejemplares disponibles");
-
-        Client client = clientRepo.findById(dto.getClientId())
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
-
+    public LoanResponseDTO createLoan(LoanRequestDTO dto) {
+        Book book = bookRepository.findById(dto.getBookId())
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+        Client client = clientRepository.findById(dto.getClientId())
+                .orElseThrow(() -> new RuntimeException("Client not found"));
         User user = null;
         if (dto.getUserId() != null) {
-            user = userRepo.findById(dto.getUserId())
-                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+            user = userRepository.findById(dto.getUserId())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
         }
 
         Loan loan = new Loan();
@@ -53,54 +58,29 @@ public class LoanServiceImpl implements LoanService {
         loan.setUser(user);
         loan.setLoanDate(LocalDate.now());
         loan.setDueDate(dto.getDueDate());
-        loan.setStatus("ACTIVE");
+        loan.setStatus("Activo");
 
-        book.setAvailableCopies(book.getAvailableCopies() - 1);
-
-        Loan saved = loanRepo.save(loan);
-        return mapToDto(saved);
+        Loan savedLoan = loanRepository.save(loan);
+        return loanMapper.toDto(savedLoan);
     }
 
     @Override
-    public LoanResponseDTO returnLoan(Long id) {
-        Loan loan = loanRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Préstamo no encontrado"));
-        loan.setReturnDate(LocalDate.now());
-        loan.setStatus("RETURNED");
-
-        Book book = loan.getBook();
-        book.setAvailableCopies(book.getAvailableCopies() + 1);
-
-        return mapToDto(loanRepo.save(loan));
+    public List<LoanResponseDTO> getAllLoans() {
+        return loanRepository.findAll()
+                .stream()
+                .map(loanMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public LoanResponseDTO findById(Long id) {
-        return null;
+    public LoanResponseDTO getLoanById(Long id) {
+        Loan loan = loanRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Loan not found"));
+        return loanMapper.toDto(loan);
     }
 
     @Override
-    public List<LoanResponseDTO> list() {
-        return List.of();
-    }
-
-    @Override
-    public void delete(Long id) {
-
-    }
-
-    private LoanResponseDTO mapToDto(Loan loan) {
-        LoanResponseDTO dto = new LoanResponseDTO();
-        dto.setId(loan.getId());
-        dto.setBookId(loan.getBook().getId());
-        dto.setBookTitle(loan.getBook().getTitle());
-        dto.setClientId(loan.getClient().getId());
-        dto.setClientName(loan.getClient().getName());
-        dto.setUserId(loan.getUser() != null ? loan.getUser().getId() : null);
-        dto.setLoanDate(loan.getLoanDate());
-        dto.setDueDate(loan.getDueDate());
-        dto.setReturnDate(loan.getReturnDate());
-        dto.setStatus(loan.getStatus());
-        return dto;
+    public void deleteLoan(Long id) {
+        loanRepository.deleteById(id);
     }
 }

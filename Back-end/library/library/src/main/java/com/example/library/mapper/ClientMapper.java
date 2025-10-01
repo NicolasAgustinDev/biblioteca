@@ -1,8 +1,8 @@
 package com.example.library.mapper;
 
 
-import com.example.library.dto.ClientRequestDTO;
-import com.example.library.dto.ClientResponseDTO;
+import com.example.library.dto.request.ClientRequestDTO;
+import com.example.library.dto.response.ClientResponseDTO;
 import com.example.library.entity.Client;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

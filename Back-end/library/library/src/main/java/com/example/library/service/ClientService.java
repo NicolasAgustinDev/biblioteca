@@ -1,7 +1,7 @@
 package com.example.library.service;
 
-import com.example.library.dto.ClientRequestDTO;
-import com.example.library.dto.ClientResponseDTO;
+import com.example.library.dto.request.ClientRequestDTO;
+import com.example.library.dto.response.ClientResponseDTO;
 
 import java.util.List;
 

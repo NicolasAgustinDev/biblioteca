@@ -1,7 +1,7 @@
 package com.example.library.controller;
 
-import com.example.library.dto.ClientRequestDTO;
-import com.example.library.dto.ClientResponseDTO;
+import com.example.library.dto.request.ClientRequestDTO;
+import com.example.library.dto.response.ClientResponseDTO;
 import com.example.library.service.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

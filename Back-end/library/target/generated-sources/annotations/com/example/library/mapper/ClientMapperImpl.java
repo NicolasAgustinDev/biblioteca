@@ -1,14 +1,14 @@
 package com.example.library.mapper;
 
-import com.example.library.dto.ClientRequestDTO;
-import com.example.library.dto.ClientResponseDTO;
+import com.example.library.dto.request.ClientRequestDTO;
+import com.example.library.dto.response.ClientResponseDTO;
 import com.example.library.entity.Client;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-09-29T01:16:57-0300",
+    date = "2025-09-30T20:51:01-0300",
     comments = "version: 1.6.3, compiler: javac, environment: Java 24.0.2 (Oracle Corporation)"
 )
 @Component
