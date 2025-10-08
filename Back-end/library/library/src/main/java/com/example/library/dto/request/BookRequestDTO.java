@@ -4,13 +4,16 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+@Builder
 @Data
 public class BookRequestDTO {
     @NotBlank
-    private String title;
-    private String author;
-    private String isbn;
-    private Integer year;
-    @Min(1) private Integer totalCopies;
-    private String category;
+    private String bookTitle;
+    private String bookAuthor;
+    private String bookIsbn;
+    private Integer bookYear;
+
+    @Min(1)
+    private Integer bookTotalCopies;
+    private String bookCategory;
 }

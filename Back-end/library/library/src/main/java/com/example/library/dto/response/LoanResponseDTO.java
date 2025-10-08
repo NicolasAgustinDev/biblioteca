@@ -1,28 +1,21 @@
 package com.example.library.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
+@Builder
 public class LoanResponseDTO {
-    // getters y setters
-    private Long id;
+    private Long loanId;
     private Long bookId;
     private String bookTitle;
     private Long clientId;
     private String clientName;
     private Long userId;
     private LocalDate loanDate;
-    private LocalDate dueDate;
-    private LocalDate returnDate;
-    private String status;
-
+    private LocalDate loanDueDate;
+    private LocalDate loanReturnDate;
+    private boolean loanDelivery;
 }
 

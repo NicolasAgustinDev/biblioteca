@@ -6,9 +6,9 @@ import com.example.library.dto.response.BookResponseDTO;
 import java.util.List;
 
 public interface BookService {
-    BookResponseDTO create(BookRequestDTO dto);
-    BookResponseDTO update(Long id, BookRequestDTO dto);
-    BookResponseDTO findById(Long id);
+    BookResponseDTO create(BookRequestDTO bookDto);
+    BookResponseDTO update(Long bookId, BookRequestDTO bookDto);
+    BookResponseDTO findById(Long bookId);
     List<BookResponseDTO> list();
-    void delete(Long id);
+    void delete(Long bookId);
 }

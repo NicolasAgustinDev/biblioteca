@@ -2,18 +2,31 @@ package com.example.library.mapper;
 
 import com.example.library.dto.request.UserRequestDTO;
 import com.example.library.dto.response.UserResponseDTO;
-import com.example.library.entity.User;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import com.example.library.entity.UserEntity;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface UserMapper {
-    User toEntity(UserRequestDTO dto);
-    UserResponseDTO toDto(User entity);
+@Component
+public class UserMapper {
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateFromDto(UserRequestDTO dto, @MappingTarget User entity);
+    public UserEntity toEntity(UserRequestDTO userDto) {
+        if (userDto == null) return null;
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(userDto.getUsername());
+        userEntity.setUserPassword(userDto.getUserPassword());
+        userEntity.setUserFullName(userDto.getUserFullName());
+        userEntity.setUserEnabled(true);
+        return userEntity;
+    }
+
+    public UserResponseDTO toDto(UserEntity userEntity) {
+        if (userEntity == null) return null;
+
+        UserResponseDTO userDto = new UserResponseDTO();
+        userDto.setUsername(userEntity.getUsername());
+        userDto.setUserFullName(userEntity.getUserFullName());
+        userDto.setUserEnabled(userEntity.getUserEnabled());
+        userDto.setUserCreatedAt(userEntity.getUserCreatedAt());
+        return userDto;
+    }
 }
-

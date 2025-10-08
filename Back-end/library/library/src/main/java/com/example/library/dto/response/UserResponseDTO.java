@@ -1,12 +1,15 @@
 package com.example.library.dto.response;
 
+import lombok.Builder;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
+@Data
+@Builder
 public class UserResponseDTO {
-    private Long id;
     private String username;
-    private String fullName;
-    private String role;
-    private Boolean enabled;
-    private LocalDateTime createdAt;
+    private String userFullName;
+    private Boolean userEnabled;
+    private LocalDateTime userCreatedAt;
 }

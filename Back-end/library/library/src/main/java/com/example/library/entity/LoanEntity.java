@@ -13,32 +13,26 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity
 @Table(name = "loans")
-public class Loan {
+public class LoanEntity {
 
-    // Getters y Setters
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long loanId;
 
-    // Relación con Book
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id", nullable = false)
-    private Book book;
+    private BookEntity book;
 
-    // Relación con Client
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
-    private Client client;
+    private ClientEntity client;
 
-    // Relación con User
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "user_username")
+    private UserEntity user;
 
     private LocalDate loanDate;
-    private LocalDate dueDate;
-    private LocalDate returnDate;
-
-    private String status; // "Activo", "Devuelto"
+    private LocalDate loanDueDate;
+    private LocalDate loanReturnDate;
+    private boolean loanDelivery = false;
 
 }

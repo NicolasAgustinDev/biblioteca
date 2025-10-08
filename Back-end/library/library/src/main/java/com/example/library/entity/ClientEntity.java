@@ -8,27 +8,25 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Setter
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "users")
-public class User {
+@Table
+public class ClientEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, unique = true)
-    private String username;
+    private Long clientId;
 
     @Column(nullable = false)
-    private String password;
+    private String clientName;
 
-    private String fullName;
-    private String role;
-    private Boolean enabled = true;
+    @Column(unique = true)
+    private String clientEmail;
+
+    private String clientPhone;
+    private String clientAddress;
     private LocalDateTime createdAt;
 
     @PrePersist

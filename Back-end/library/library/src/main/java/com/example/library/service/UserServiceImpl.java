@@ -2,54 +2,57 @@ package com.example.library.service;
 
 import com.example.library.dto.request.UserRequestDTO;
 import com.example.library.dto.response.UserResponseDTO;
-import com.example.library.entity.User;
+import com.example.library.entity.UserEntity;
 import com.example.library.mapper.UserMapper;
 import com.example.library.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository repo;
-    private final UserMapper mapper;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    public UserServiceImpl(UserRepository repo, UserMapper mapper) {
-        this.repo = repo;
-        this.mapper = mapper;
+    @Override
+    public List<UserResponseDTO> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(userMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public UserResponseDTO create(UserRequestDTO dto) {
-        User user = mapper.toEntity(dto);
-        return mapper.toDto(repo.save(user));
-    }
-
-    @Override
-    public UserResponseDTO update(Long id, UserRequestDTO dto) {
-        User user = repo.findById(id)
+    public UserResponseDTO getUserByUsername(String username) {
+        UserEntity userEntity = userRepository.findById(username)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        mapper.updateFromDto(dto, user);
-        return mapper.toDto(repo.save(user));
+        return userMapper.toDto(userEntity);
     }
 
     @Override
-    public UserResponseDTO findById(Long id) {
-        return repo.findById(id)
-                .map(mapper::toDto)
+    public UserResponseDTO createUser(UserRequestDTO request) {
+        UserEntity userEntity = userMapper.toEntity(request);
+        return userMapper.toDto(userRepository.save(userEntity));
+    }
+
+    @Override
+    public UserResponseDTO updateUser(String username, UserRequestDTO request) {
+        UserEntity userExisting = userRepository.findById(username)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        userExisting.setUserFullName(request.getUserFullName());
+        userExisting.setUserPassword(request.getUserPassword());
+        return userMapper.toDto(userRepository.save(userExisting));
     }
 
     @Override
-    public List<UserResponseDTO> list() {
-        return repo.findAll().stream().map(mapper::toDto).toList();
-    }
-
-    @Override
-    public void delete(Long id) {
-        repo.deleteById(id);
+    public void deleteUser(String username) {
+        if (!userRepository.existsById(username)) {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+        userRepository.deleteById(username);
     }
 }

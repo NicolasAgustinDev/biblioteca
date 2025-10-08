@@ -14,36 +14,36 @@ import java.util.List;
 @RequestMapping("/api/clients")
 public class ClientController {
 
-    private final ClientService service;
+    private final ClientService clientService;
 
-    public ClientController(ClientService service) {
-        this.service = service;
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
     }
 
     @PostMapping
-    public ResponseEntity<ClientResponseDTO> create(@Valid @RequestBody ClientRequestDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
+    public ResponseEntity<ClientResponseDTO> create(@Valid @RequestBody ClientRequestDTO clientDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(clientService.create(clientDto));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClientResponseDTO> get(@PathVariable Long id) {
-        return ResponseEntity.ok(service.findById(id));
+    public ResponseEntity<ClientResponseDTO> get(@PathVariable Long clientId) {
+        return ResponseEntity.ok(clientService.findById(clientId));
     }
 
     @GetMapping
     public ResponseEntity<List<ClientResponseDTO>> list() {
-        return ResponseEntity.ok(service.list());
+        return ResponseEntity.ok(clientService.list());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClientResponseDTO> update(@PathVariable Long id,
-                                                    @Valid @RequestBody ClientRequestDTO dto) {
-        return ResponseEntity.ok(service.update(id, dto));
+    public ResponseEntity<ClientResponseDTO> update(@PathVariable Long clientId,
+                                                    @Valid @RequestBody ClientRequestDTO clienteDto) {
+        return ResponseEntity.ok(clientService.update(clientId, clienteDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long bookId) {
+        clientService.delete(bookId);
         return ResponseEntity.noContent().build();
     }
 }

@@ -5,9 +5,9 @@ import com.example.library.dto.response.LoanResponseDTO;
 import java.util.List;
 
 public interface LoanService {
-    LoanResponseDTO createLoan(LoanRequestDTO dto);
-    LoanResponseDTO returnLoan(Long id);
+    LoanResponseDTO createLoan(LoanRequestDTO loanDto);
+    LoanResponseDTO returnLoan(Long loanId);
     List<LoanResponseDTO> getAll();
-    LoanResponseDTO getById(Long id);
-    void delete(Long id);
+    LoanResponseDTO getById(Long loanId);
+    void delete(Long loanId);
 }

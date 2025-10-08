@@ -2,54 +2,57 @@ package com.example.library.service;
 
 import com.example.library.dto.request.ClientRequestDTO;
 import com.example.library.dto.response.ClientResponseDTO;
-import com.example.library.entity.Client;
+import com.example.library.entity.ClientEntity;
 import com.example.library.mapper.ClientMapper;
 import com.example.library.repository.ClientRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-@Transactional
-public class ClientServiceImpl implements ClientService {
+public class ClientServiceImpl {
 
-    private final ClientRepository repo;
-    private final ClientMapper mapper;
+    private final ClientRepository clientRepository;
+    private final ClientMapper clientMapper;
 
-    public ClientServiceImpl(ClientRepository repo, ClientMapper mapper) {
-        this.repo = repo;
-        this.mapper = mapper;
+    public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper) {
+        this.clientRepository = clientRepository;
+        this.clientMapper = clientMapper;
     }
 
-    @Override
-    public ClientResponseDTO create(ClientRequestDTO dto) {
-        Client client = mapper.toEntity(dto);
-        return mapper.toDto(repo.save(client));
+    public ClientResponseDTO createClient(ClientRequestDTO requestDTO) {
+        ClientEntity clientEntity = clientMapper.toEntity(requestDTO);
+        clientRepository.save(clientEntity);
+        return clientMapper.toDTO(clientEntity);
     }
 
-    @Override
-    public ClientResponseDTO update(Long id, ClientRequestDTO dto) {
-        Client client = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
-        mapper.updateFromDto(dto, client);
-        return mapper.toDto(repo.save(client));
+    public List<ClientResponseDTO> getAllClients() {
+        return clientRepository.findAll().stream()
+                .map(clientMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    @Override
-    public ClientResponseDTO findById(Long id) {
-        return repo.findById(id)
-                .map(mapper::toDto)
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+    public ClientResponseDTO getClientById(Long clienId) {
+        ClientEntity entity = clientRepository.findById(clienId)
+                .orElseThrow(() -> new RuntimeException("Client no encontrado"));
+        return clientMapper.toDTO(entity);
     }
 
-    @Override
-    public List<ClientResponseDTO> list() {
-        return repo.findAll().stream().map(mapper::toDto).toList();
+    public ClientResponseDTO updateClient(Long clientId, ClientRequestDTO requestDTO) {
+        ClientEntity clientEntity = clientRepository.findById(clientId)
+                .orElseThrow(() -> new RuntimeException("Client no encontrado"));
+
+        clientEntity.setClientName(requestDTO.getClientName());
+        clientEntity.setClientEmail(requestDTO.getClientEmail());
+        clientEntity.setClientPhone(requestDTO.getClientPhone());
+        clientEntity.setClientAddress(requestDTO.getClientAddress());
+
+        clientRepository.save(clientEntity);
+        return clientMapper.toDTO(clientEntity);
     }
 
-    @Override
-    public void delete(Long id) {
-        repo.deleteById(id);
+    public void deleteClient(Long clientId) {
+        clientRepository.deleteById(clientId);
     }
 }

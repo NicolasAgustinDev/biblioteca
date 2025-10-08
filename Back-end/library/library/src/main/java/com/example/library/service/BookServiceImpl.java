@@ -2,56 +2,65 @@ package com.example.library.service;
 
 import com.example.library.dto.request.BookRequestDTO;
 import com.example.library.dto.response.BookResponseDTO;
-import com.example.library.entity.Book;
+import com.example.library.entity.BookEntity;
 import com.example.library.mapper.BookMapper;
 import com.example.library.repository.BookRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class BookServiceImpl implements BookService {
-    private final BookRepository repo;
-    private final BookMapper mapper;
 
-    public BookServiceImpl(BookRepository repo, BookMapper mapper) {
-        this.repo = repo;
-        this.mapper = mapper;
+    private final BookRepository bookRepository;
+    private final BookMapper bookMapper;
+
+    public BookServiceImpl(BookRepository bookRepository, BookMapper bookMapper) {
+        this.bookRepository = bookRepository;
+        this.bookMapper = bookMapper;
     }
 
     @Override
-    public BookResponseDTO create(BookRequestDTO dto) {
-        Book book = mapper.toEntity(dto);
-        book.setAvailableCopies(dto.getTotalCopies());
-        return mapper.toDto(repo.save(book));
+    public BookResponseDTO createBook(BookRequestDTO bookDto) {
+        BookEntity bookEntity = bookMapper.toEntity(bookDto);
+        BookEntity bookSaved = bookRepository.save(bookEntity);
+        return bookMapper.toDTO(bookSaved);
     }
 
     @Override
-    public BookResponseDTO update(Long id, BookRequestDTO dto) {
-        Book book = repo.findById(id)
+    public BookResponseDTO updateBook(Long bookId, BookRequestDTO bookDto) {
+        BookEntity existing = bookRepository.findById(bookId)
                 .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
-        mapper.updateFromDto(dto, book);
-        return mapper.toDto(repo.save(book));
+        existing.setTitle(bookDto.getTitle());
+        existing.setAuthor(bookDto.getAuthor());
+        existing.setIsbn(bookDto.getIsbn());
+        existing.setYear(bookDto.getYear());
+        existing.setTotalCopies(bookDto.getTotalCopies());
+        existing.setCategory(bookDto.getCategory());
+        return bookMapper.toDTO(bookRepository.save(existing));
     }
 
     @Override
-    public BookResponseDTO findById(Long id) {
-        return repo.findById(id)
-                .map(mapper::toDto)
+    public void deleteBook(Long bookId) {
+        bookRepository.deleteById(bookId);
+    }
+
+    @Override
+    public BookResponseDTO getBookById(Long bookId) {
+        return bookRepository.findById(bookId)
+                .map(bookMapper::toDTO)
                 .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
     }
 
     @Override
-    public List<BookResponseDTO> list() {
-        return repo.findAll().stream().map(mapper::toDto).toList();
-    }
-
-    @Override
-    public void delete(Long id) {
-        repo.deleteById(id);
+    public List<BookResponseDTO> getAllBooks() {
+        return bookRepository.findAll()
+                .stream()
+                .map(bookMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }
+
 
 

@@ -1,19 +1,30 @@
 package com.example.library.mapper;
 
-
 import com.example.library.dto.request.ClientRequestDTO;
 import com.example.library.dto.response.ClientResponseDTO;
-import com.example.library.entity.Client;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import com.example.library.entity.ClientEntity;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface ClientMapper {
-    Client toEntity(ClientRequestDTO dto);
-    ClientResponseDTO toDto(Client entity);
+@Component
+public class ClientMapper {
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateFromDto(ClientRequestDTO dto, @MappingTarget Client entity);
+    public ClientEntity toEntity(ClientRequestDTO clientDto) {
+        ClientEntity clientEntity = new ClientEntity();
+        clientEntity.setClientName(clientDto.getClientName());
+        clientEntity.setClientEmail(clientDto.getClientEmail());
+        clientEntity.setClientPhone(clientDto.getClientPhone());
+        clientEntity.setClientAddress(clientDto.getClientAddress());
+        return clientEntity;
+    }
+
+    public ClientResponseDTO toDTO(ClientEntity clientEntity) {
+        ClientResponseDTO clientDto = new ClientResponseDTO();
+        clientDto.setClientId(clientEntity.getClientId());
+        clientDto.setClientName(clientEntity.getClientName());
+        clientDto.setClientEmail(clientEntity.getClientEmail());
+        clientDto.setClientPhone(clientEntity.getClientPhone());
+        clientDto.setClientAddress(clientEntity.getClientAddress());
+        clientDto.setClientCreatedAt(clientEntity.getCreatedAt());
+        return clientDto;
+    }
 }

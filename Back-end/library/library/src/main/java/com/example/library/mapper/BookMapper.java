@@ -1,18 +1,33 @@
 package com.example.library.mapper;
 
-import com.example.library.dto.response.BookResponseDTO;
 import com.example.library.dto.request.BookRequestDTO;
-import com.example.library.entity.Book;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import com.example.library.dto.response.BookResponseDTO;
+import com.example.library.entity.BookEntity;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface BookMapper {
-    Book toEntity(BookRequestDTO dto);
-    BookResponseDTO toDto(Book entity);
+@Component
+public class BookMapper {
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateFromDto(BookRequestDTO dto, @MappingTarget Book entity);
+    public BookEntity toEntity(BookRequestDTO bookDto) {
+        return BookEntity.builder()
+                .title(bookDto.getTitle())
+                .author(bookDto.getAuthor())
+                .isbn(bookDto.getIsbn())
+                .year(bookDto.getYear())
+                .totalCopies(bookDto.getTotalCopies())
+                .category(bookDto.getCategory())
+                .build();
+    }
+
+    public BookResponseDTO toDTO(BookEntity bookEntity) {
+        return BookResponseDTO.builder()
+                .id(bookEntity.getId())
+                .title(bookEntity.getTitle())
+                .author(bookEntity.getAuthor())
+                .isbn(bookEntity.getIsbn())
+                .year(bookEntity.getYear())
+                .totalCopies(bookEntity.getTotalCopies())
+                .category(bookEntity.getCategory())
+                .build();
+    }
 }

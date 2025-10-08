@@ -1,15 +1,20 @@
 package com.example.library.dto.response;
 
-import java.time.LocalDateTime;
+import lombok.Builder;
+import lombok.Data;
 
+import java.time.LocalDate;
+
+@Data
+@Builder
 public class BookResponseDTO {
-    private Long id;
-    private String title;
-    private String author;
-    private String isbn;
-    private Integer year;
-    private Integer totalCopies;
-    private Integer availableCopies;
-    private String category;
-    private LocalDateTime createdAt;
+    private Long bookId;
+    private String bookTitle;
+    private String bookAuthor;
+    private String bookIsbn;
+    private Integer bookYear;
+    private Integer bookTotalCopies;
+    private String bookCategory;
+    private LocalDate bookPublishedDate;
+    private Integer bookAvailableCopies;
 }

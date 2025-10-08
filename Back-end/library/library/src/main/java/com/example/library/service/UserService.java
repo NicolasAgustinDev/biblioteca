@@ -6,9 +6,10 @@ import com.example.library.dto.response.UserResponseDTO;
 import java.util.List;
 
 public interface UserService {
-    UserResponseDTO create(UserRequestDTO dto);
-    UserResponseDTO update(Long id, UserRequestDTO dto);
-    UserResponseDTO findById(Long id);
-    List<UserResponseDTO> list();
-    void delete(Long id);
+
+    List<UserResponseDTO> getAllUsers();
+    UserResponseDTO getUserByUsername(String username);
+    UserResponseDTO createUser(UserRequestDTO request);
+    UserResponseDTO updateUser(String username, UserRequestDTO request);
+    void deleteUser(String username);
 }

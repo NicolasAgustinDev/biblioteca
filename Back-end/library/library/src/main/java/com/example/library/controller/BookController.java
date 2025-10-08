@@ -13,33 +13,33 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
-    private final BookService service;
-    public BookController(BookService service) { this.service = service; }
+    private final BookService bookService;
+    public BookController(BookService bookService) { this.bookService = bookService; }
 
     @PostMapping
-    public ResponseEntity<BookResponseDTO> create(@Valid @RequestBody BookRequestDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
+    public ResponseEntity<BookResponseDTO> create(@Valid @RequestBody BookRequestDTO bookDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookService.create(bookDto));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookResponseDTO> get(@PathVariable Long id) {
-        return ResponseEntity.ok(service.findById(id));
+    public ResponseEntity<BookResponseDTO> get(@PathVariable Long bookId) {
+        return ResponseEntity.ok(bookService.findById(bookId));
     }
 
     @GetMapping
     public ResponseEntity<List<BookResponseDTO>> list() {
-        return ResponseEntity.ok(service.list());
+        return ResponseEntity.ok(bookService.list());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BookResponseDTO> update(@PathVariable Long id,
-                                                  @Valid @RequestBody BookRequestDTO dto) {
-        return ResponseEntity.ok(service.update(id, dto));
+    public ResponseEntity<BookResponseDTO> update(@PathVariable Long bookId,
+                                                  @Valid @RequestBody BookRequestDTO bookDto) {
+        return ResponseEntity.ok(bookService.update(bookId, bookDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long bookId) {
+        bookService.delete(bookId);
         return ResponseEntity.noContent().build();
     }
 }

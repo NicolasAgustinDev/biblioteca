@@ -1,10 +1,7 @@
 package com.example.library.dto.request;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -12,13 +9,14 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class LoanRequestDTO {
     @NotNull
     private Long bookId;
     @NotNull
     private Long clientId;
     @NotNull
-    private LocalDate dueDate;
+    private LocalDate loanDueDate;
     private Long userId;
 
 }
