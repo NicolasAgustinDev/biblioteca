@@ -5,32 +5,30 @@ import com.example.library.dto.response.BookResponseDTO;
 import com.example.library.entity.BookEntity;
 import com.example.library.mapper.BookMapper;
 import com.example.library.repository.BookRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
 
-    public BookServiceImpl(BookRepository bookRepository, BookMapper bookMapper) {
-        this.bookRepository = bookRepository;
-        this.bookMapper = bookMapper;
-    }
 
     @Override
-    public BookResponseDTO createBook(BookRequestDTO bookDto) {
+    public BookResponseDTO create(BookRequestDTO bookDto) {
         BookEntity bookEntity = bookMapper.toEntity(bookDto);
         BookEntity bookSaved = bookRepository.save(bookEntity);
         return bookMapper.toDTO(bookSaved);
     }
 
     @Override
-    public BookResponseDTO updateBook(Long bookId, BookRequestDTO bookDto) {
-        BookEntity existing = bookRepository.findById(bookId)
+    public BookResponseDTO update(Long bookId, BookRequestDTO bookDto) {
+        BookEntity existing = this.bookRepository.findById(bookId)
                 .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
         existing.setTitle(bookDto.getTitle());
         existing.setAuthor(bookDto.getAuthor());
@@ -58,7 +56,7 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findAll()
                 .stream()
                 .map(bookMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClientMapper {
 
+    usar builder
     public ClientEntity toEntity(ClientRequestDTO clientDto) {
         ClientEntity clientEntity = new ClientEntity();
         clientEntity.setClientName(clientDto.getClientName());

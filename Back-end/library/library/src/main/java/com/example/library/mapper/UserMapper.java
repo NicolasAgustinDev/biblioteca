@@ -11,12 +11,13 @@ public class UserMapper {
     public UserEntity toEntity(UserRequestDTO userDto) {
         if (userDto == null) return null;
 
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUsername(userDto.getUsername());
-        userEntity.setUserPassword(userDto.getUserPassword());
-        userEntity.setUserFullName(userDto.getUserFullName());
-        userEntity.setUserEnabled(true);
-        return userEntity;
+        return UserEntity.builder()
+                .username(userDto.getUsername())
+                .userPassword(userDto.getUserPassword())
+                .userFullName(userDto.getUserFullName())
+                .userEnabled(true)
+                .build();
+
     }
 
     public UserResponseDTO toDto(UserEntity userEntity) {

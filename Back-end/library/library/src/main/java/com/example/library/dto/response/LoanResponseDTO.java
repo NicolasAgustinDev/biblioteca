@@ -13,7 +13,7 @@ public class LoanResponseDTO {
     private Long clientId;
     private String clientName;
     private Long userId;
-    private LocalDate loanDate;
+    private LocalDate loanDate; //especificar mejor que se trate de la fecha de ingreso
     private LocalDate loanDueDate;
     private LocalDate loanReturnDate;
     private boolean loanDelivery;

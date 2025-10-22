@@ -8,26 +8,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class BookMapper {
 
-    public BookEntity toEntity(BookRequestDTO bookDto) {
+    public BookEntity toEntity(BookRequestDTO dto) {
         return BookEntity.builder()
-                .title(bookDto.getTitle())
-                .author(bookDto.getAuthor())
-                .isbn(bookDto.getIsbn())
-                .year(bookDto.getYear())
-                .totalCopies(bookDto.getTotalCopies())
-                .category(bookDto.getCategory())
+                .title(dto.getTitle())
+                .author(dto.getAuthor())
+                .isbn(dto.getIsbn())
+                .year(dto.getYear())
+                .totalCopies(dto.getTotalCopies())
+                .category(dto.getCategory())
                 .build();
     }
 
-    public BookResponseDTO toDTO(BookEntity bookEntity) {
+    public BookResponseDTO toDTO(BookEntity entity) {
         return BookResponseDTO.builder()
-                .id(bookEntity.getId())
-                .title(bookEntity.getTitle())
-                .author(bookEntity.getAuthor())
-                .isbn(bookEntity.getIsbn())
-                .year(bookEntity.getYear())
-                .totalCopies(bookEntity.getTotalCopies())
-                .category(bookEntity.getCategory())
+                .id(entity.getId())
+                .title(entity.getTitle())
+                .author(entity.getAuthor())
+                .isbn(entity.getIsbn())
+                .year(entity.getYear())
+                .totalCopies(entity.getTotalCopies())
+                .category(entity.getCategory())
                 .build();
     }
 }

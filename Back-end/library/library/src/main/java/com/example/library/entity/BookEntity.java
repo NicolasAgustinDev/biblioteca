@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Builder
 @Table(name = "books")
 public class BookEntity {
-    @Id
+    @Id//especificar estrategia de autoincrementar identity
     private Long bookId;
 
     private String bookTitle;
