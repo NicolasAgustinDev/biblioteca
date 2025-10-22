@@ -1,15 +1,16 @@
-package com.example.library.service;
+package com.example.library.service.impl;
 
 import com.example.library.dto.request.BookRequestDTO;
 import com.example.library.dto.response.BookResponseDTO;
 import com.example.library.entity.BookEntity;
+import com.example.library.exceptions.BookNotFoundException;
 import com.example.library.mapper.BookMapper;
 import com.example.library.repository.BookRepository;
+import com.example.library.service.interfaces.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookResponseDTO update(Long bookId, BookRequestDTO bookDto) {
         BookEntity existing = this.bookRepository.findById(bookId)
-                .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
+                .orElseThrow(() -> new BookNotFoundException(bookId));
         existing.setTitle(bookDto.getTitle());
         existing.setAuthor(bookDto.getAuthor());
         existing.setIsbn(bookDto.getIsbn());
@@ -48,7 +49,7 @@ public class BookServiceImpl implements BookService {
     public BookResponseDTO getBookById(Long bookId) {
         return bookRepository.findById(bookId)
                 .map(bookMapper::toDTO)
-                .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
+                .orElseThrow(() -> new BookNotFoundException(bookId));
     }
 
     @Override

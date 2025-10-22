@@ -4,6 +4,6 @@ public class BookNotFoundException extends RuntimeException {
 
     public BookNotFoundException(Long id){
 
-        super (String.format("Libro no encontrdo: %d", id));
+        super (String.format("Libro no encontrado: %d", id));
     }
 }

@@ -2,7 +2,7 @@ package com.example.library.controller;
 
 import com.example.library.dto.request.LoanRequestDTO;
 import com.example.library.dto.response.LoanResponseDTO;
-import com.example.library.service.LoanService;
+import com.example.library.service.interfaces.LoanService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

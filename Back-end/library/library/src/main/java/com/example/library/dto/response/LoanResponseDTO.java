@@ -4,18 +4,22 @@ import lombok.*;
 
 import java.time.LocalDate;
 
+@Setter
+@Getter
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoanResponseDTO {
-    private Long loanId;
+    private Long id;
     private Long bookId;
     private String bookTitle;
-    private Long clientId;
+    private Long clientEmail;
     private String clientName;
     private Long userId;
-    private LocalDate loanDate; //especificar mejor que se trate de la fecha de ingreso
-    private LocalDate loanDueDate;
-    private LocalDate loanReturnDate;
-    private boolean loanDelivery;
+    private LocalDate date;
+    private LocalDate dueDate;
+    private LocalDate returnDate;
+    private boolean delivery;
 }
 

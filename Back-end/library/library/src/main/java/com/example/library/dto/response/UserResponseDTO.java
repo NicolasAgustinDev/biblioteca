@@ -1,19 +1,18 @@
 package com.example.library.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserResponseDTO {
-    private String username;
-    private String userFullName;
-    private Boolean userEnabled;
-    private LocalDateTime userCreatedAt;
+    private Long id;
+    private String fullName;
+    private Boolean enabled;
+    private LocalDateTime createdAt;
 }

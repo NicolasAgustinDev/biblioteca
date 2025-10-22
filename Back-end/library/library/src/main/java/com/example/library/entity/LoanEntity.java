@@ -1,12 +1,11 @@
 package com.example.library.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.time.LocalDate;
 
+@Builder
 @Setter
 @Getter
 @NoArgsConstructor
@@ -16,23 +15,23 @@ import java.time.LocalDate;
 public class LoanEntity {
 
     @Id
-    private Long loanId;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id", nullable = false)
+    @JoinColumn(name = "id", nullable = false)
     private BookEntity book;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id", nullable = false)
+    @JoinColumn(name = "email", nullable = false)
     private ClientEntity client;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_username")
+    @JoinColumn(name = "id")
     private UserEntity user;
 
-    private LocalDate loanDate;
-    private LocalDate loanDueDate;
-    private LocalDate loanReturnDate;
-    private boolean loanDelivery = false;
+    private LocalDate date;
+    private LocalDate dueDate;
+    private LocalDate returnDate;
+    private boolean delivery = false;
 
 }

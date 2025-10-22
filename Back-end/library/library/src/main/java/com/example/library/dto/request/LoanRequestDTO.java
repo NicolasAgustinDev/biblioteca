@@ -14,9 +14,9 @@ public class LoanRequestDTO {
     @NotNull
     private Long bookId;
     @NotNull
-    private Long clientId;
+    private Long clientEmail;
     @NotNull
-    private LocalDate loanDueDate;
+    private LocalDate dueDate;
     private Long userId;
 
 }

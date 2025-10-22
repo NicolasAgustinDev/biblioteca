@@ -1,8 +1,10 @@
-package com.example.library.service;
+package com.example.library.service.impl;
 
 import com.example.library.dto.request.ClientRequestDTO;
 import com.example.library.dto.response.ClientResponseDTO;
 import com.example.library.entity.ClientEntity;
+import com.example.library.exceptions.BookNotFoundException;
+import com.example.library.exceptions.ClientNotFoundException;
 import com.example.library.mapper.ClientMapper;
 import com.example.library.repository.ClientRepository;
 import org.springframework.stereotype.Service;
@@ -33,15 +35,15 @@ public class ClientServiceImpl {
                 .collect(Collectors.toList());
     }
 
-    public ClientResponseDTO getClientById(Long clienId) {
-        ClientEntity entity = clientRepository.findById(clienId)
-                .orElseThrow(() -> new RuntimeException("Client no encontrado"));
+    public ClientResponseDTO getClientById(String email) {
+        ClientEntity entity = clientRepository.findById(email)
+                .orElseThrow(() -> new ClientNotFoundException(email));
         return clientMapper.toDTO(entity);
     }
 
-    public ClientResponseDTO updateClient(Long clientId, ClientRequestDTO requestDTO) {
-        ClientEntity clientEntity = clientRepository.findById(clientId)
-                .orElseThrow(() -> new RuntimeException("Client no encontrado"));
+    public ClientResponseDTO updateClient(String email, ClientRequestDTO requestDTO) {
+        ClientEntity clientEntity = clientRepository.findById(email)
+                .orElseThrow(() -> new ClientNotFoundException(email));
 
         clientEntity.setClientName(requestDTO.getClientName());
         clientEntity.setClientEmail(requestDTO.getClientEmail());

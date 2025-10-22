@@ -7,6 +7,8 @@ import com.example.library.entity.ClientEntity;
 import com.example.library.entity.LoanEntity;
 import com.example.library.entity.UserEntity;
 import com.example.library.exceptions.BookNotFoundException;
+import com.example.library.exceptions.ClientNotFoundException;
+import com.example.library.exceptions.UserNotFoundException;
 import com.example.library.repository.BookRepository;
 import com.example.library.repository.ClientRepository;
 import com.example.library.repository.UserRepository;
@@ -26,10 +28,10 @@ public class LoanMapper {
         LoanEntity loanEntity = new LoanEntity();
 
         BookEntity book = bookRepository.findById(loanDto.getBookId())
-                .orElseThrow(() -> new BookNotFoundException(loanDto.getBookId())); // crea una exception persoanlizada
+                .orElseThrow(() -> new BookNotFoundException(loanDto.getBookId()));
 
-        ClientEntity client = clientRepository.findById(loanDto.getClientId())
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado")); // crea una expcepcion personalizada
+        ClientEntity client = clientRepository.findById(loanDto.getClientEmail())
+                .orElseThrow(() -> new ClientNotFoundException(loanDto.getClientEmail()));
 
         loanEntity.setBook(book);
         loanEntity.setClient(client);
@@ -37,7 +39,7 @@ public class LoanMapper {
 
         if (loanDto.getUserId() != null) {
             UserEntity user = userRepository.findById(loanDto.getUserId())
-                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                    .orElseThrow(() -> new UserNotFoundException(loanDto.getUserId()));
             loanEntity.setUser(user);
         }
 
@@ -47,27 +49,16 @@ public class LoanMapper {
     public LoanResponseDTO toDTO(LoanEntity entity) {
 
         return LoanResponseDTO.builder()
-                .loanId(entity.getLoanId())
-
-
-
+                .id(entity.getId())
+                .bookId(entity.getBook().getId())
+                .bookTitle(entity.getBook().getTitle())
+                .clientEmail(entity.getClient().getEmail())
+                .clientName(entity.getClient().getName())
+                .date(entity.getDate())
+                .dueDate(entity.getDueDate())
+                .returnDate(entity.getReturnDate())
+                .delivery(entity.isDelivery())
                 .build();
-        /*
-        LoanResponseDTO loanDto = new LoanResponseDTO();
 
-        loanDto.setLoanId(LoanEntity.getLoanId());
-        loanDto.setBookId(LoanEntity.getBook().getBookId());
-        loanDto.setBookTitle(LoanEntity.getBook().getBookTitle());
-        loanDto.setClientId(LoanEntity.getClient().getClientId());
-        loanDto.setClientName(LoanEntity.getClient().getClientName());
-        loanDto.setLoanDate(LoanEntity.getLoanDate());
-        loanDto.setLoanDueDate(LoanEntity.getLoanDueDate());
-        loanDto.setLoanReturnDate(LoanEntity.getLoanReturnDate());
-        loanDto.setLoanDelivery(LoanEntity.isLoanDelivery());
-        if (LoanEntity.getUser() != null) {
-            loanDto.setUserId(LoanEntity.getUser().getUsername());
-        }
-
-        return loanDto;*/
     }
 }

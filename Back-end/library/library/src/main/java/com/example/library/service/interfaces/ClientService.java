@@ -1,4 +1,4 @@
-package com.example.library.service;
+package com.example.library.service.interfaces;
 
 import com.example.library.dto.request.ClientRequestDTO;
 import com.example.library.dto.response.ClientResponseDTO;

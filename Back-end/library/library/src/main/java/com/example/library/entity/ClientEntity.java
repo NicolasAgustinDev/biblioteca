@@ -1,32 +1,30 @@
 package com.example.library.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.Email;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table
+@Table(name = "client")
 public class ClientEntity {
 
     @Id
-    private Long clientId;
+    @Email
+    @Column(unique = true)
+    private String email;
 
     @Column(nullable = false)
-    private String clientName;
+    private String name;
 
-    @Column(unique = true)
-    private String clientEmail;
-
-    private String clientPhone;
-    private String clientAddress;
+    private String phone;
+    private String address;
     private LocalDateTime createdAt;
 
     @PrePersist

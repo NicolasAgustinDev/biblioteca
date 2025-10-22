@@ -1,8 +1,9 @@
-package com.example.library.service;
+package com.example.library.service.impl;
 
 import com.example.library.dto.request.LoanRequestDTO;
 import com.example.library.dto.response.LoanResponseDTO;
 import com.example.library.entity.LoanEntity;
+import com.example.library.exceptions.LoanNotFoundException;
 import com.example.library.mapper.LoanMapper;
 import com.example.library.repository.LoanRepository;
 import org.springframework.stereotype.Service;
@@ -37,13 +38,13 @@ public class LoanServiceImpl {
 
     public LoanResponseDTO getLoanById(Long loanId) {
         LoanEntity loanEntity = loanRepository.findById(loanId)
-                .orElseThrow(() -> new RuntimeException("Préstamo no encontrado"));
+                .orElseThrow(() -> new LoanNotFoundException(loanId));
         return loanMapper.toDTO(loanEntity);
     }
 
     public LoanResponseDTO returnLoan(Long loanId) {
         LoanEntity loanEntity = loanRepository.findById(loanId)
-                .orElseThrow(() -> new RuntimeException("Préstamo no encontrado"));
+                .orElseThrow(() -> new LoanNotFoundException(loanId));
 
         loanEntity.setLoanReturned(true);
         loanEntity.setLoanReturnDate(LocalDate.now());

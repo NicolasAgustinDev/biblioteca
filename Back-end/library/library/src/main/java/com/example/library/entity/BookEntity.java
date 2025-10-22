@@ -16,14 +16,14 @@ import java.time.LocalDate;
 @Table(name = "books")
 public class BookEntity {
     @Id//especificar estrategia de autoincrementar identity
-    private Long bookId;
+    private Long id;
 
-    private String bookTitle;
-    private String bookAuthor;
-    private String bookIsbn;
-    private Integer bookYear;
-    private LocalDate bookPublishedDate;
-    private Integer bookAvailableCopies;
-    private Integer bookTotalCopies;
-    private String bookCategory;
+    private String title;
+    private String author;
+    private String isbn;
+    private Integer year;
+    private LocalDate publishedDate;
+    private Integer availableCopies;
+    private Integer totalCopies;
+    private String category;
 }

@@ -2,17 +2,21 @@ package com.example.library.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
+@Setter
+@Getter
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ClientRequestDTO {
         @NotBlank
-        private String clientName;
+        private String name;
+
         @Email
-        private String clientEmail;
-        private String clientPhone;
-        private String clientAddress;
+        private String email;
+        private String phone;
+        private String address;
 
 }

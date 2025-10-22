@@ -1,18 +1,21 @@
 package com.example.library.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.time.LocalDateTime;
+
+@Setter
+@Getter
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequestDTO {
+    private Long id;
+
     @NotBlank
-    private String username;
-    @NotBlank private String userPassword;
-    private String userFullName;
+    private String password;
+    private String fullName;
+    private LocalDateTime createdAt;
 }

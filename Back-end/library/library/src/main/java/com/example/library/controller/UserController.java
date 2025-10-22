@@ -2,7 +2,7 @@ package com.example.library.controller;
 
 import com.example.library.dto.request.UserRequestDTO;
 import com.example.library.dto.response.UserResponseDTO;
-import com.example.library.service.UserService;
+import com.example.library.service.interfaces.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -15,13 +15,13 @@ import java.time.LocalDateTime;
 public class UserEntity {
 
     @Id
-    private String username;
+    private String id;
 
-    private String userPassword;
-    private String userFullName;
-    private Boolean userEnabled = true;
-    private LocalDateTime userCreatedAt;
+    private String password;
+    private String fullName;
+    private Boolean enabled = true;
+    private LocalDateTime createdAt;
 
     @PrePersist
-    public void prePersist() { userCreatedAt = LocalDateTime.now(); }
+    public void prePersist() { createdAt = LocalDateTime.now(); }
 }

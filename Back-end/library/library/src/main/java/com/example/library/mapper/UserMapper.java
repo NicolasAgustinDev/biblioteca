@@ -8,26 +8,28 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
 
-    public UserEntity toEntity(UserRequestDTO userDto) {
-        if (userDto == null) return null;
+    public UserEntity toEntity(UserRequestDTO dto) {
+        if (dto == null) return null;
 
         return UserEntity.builder()
-                .username(userDto.getUsername())
-                .userPassword(userDto.getUserPassword())
-                .userFullName(userDto.getUserFullName())
-                .userEnabled(true)
+                .id(dto.getId())
+                .fullName(dto.getFullName())
+                .password(dto.getPassword())
+                .createdAt(dto.getCreatedAt())
+                .enabled(true)
                 .build();
 
     }
 
-    public UserResponseDTO toDto(UserEntity userEntity) {
-        if (userEntity == null) return null;
+    public UserResponseDTO toDto(UserEntity entity) {
+        if (entity == null) return null;
 
-        UserResponseDTO userDto = new UserResponseDTO();
-        userDto.setUsername(userEntity.getUsername());
-        userDto.setUserFullName(userEntity.getUserFullName());
-        userDto.setUserEnabled(userEntity.getUserEnabled());
-        userDto.setUserCreatedAt(userEntity.getUserCreatedAt());
-        return userDto;
+        return UserEntity.builder()
+                .id(entity.getId())
+                .fullName(entity.getFullName())
+                .enabled(entity.getEnabled())
+                .createdAt(entity.getCreatedAt())
+                .password(entity.getPassword())
+                .build();
     }
 }

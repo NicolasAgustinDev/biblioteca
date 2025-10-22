@@ -8,24 +8,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClientMapper {
 
-    usar builder
-    public ClientEntity toEntity(ClientRequestDTO clientDto) {
-        ClientEntity clientEntity = new ClientEntity();
-        clientEntity.setClientName(clientDto.getClientName());
-        clientEntity.setClientEmail(clientDto.getClientEmail());
-        clientEntity.setClientPhone(clientDto.getClientPhone());
-        clientEntity.setClientAddress(clientDto.getClientAddress());
-        return clientEntity;
+    public ClientEntity toEntity(ClientRequestDTO dto) {
+        return ClientEntity.builder()
+                            .name(dto.getName())
+                            .email(dto.getEmail())
+                            .phone(dto.getPhone())
+                            .address(dto.getAddress())
+                            .build();
     }
 
-    public ClientResponseDTO toDTO(ClientEntity clientEntity) {
-        ClientResponseDTO clientDto = new ClientResponseDTO();
-        clientDto.setClientId(clientEntity.getClientId());
-        clientDto.setClientName(clientEntity.getClientName());
-        clientDto.setClientEmail(clientEntity.getClientEmail());
-        clientDto.setClientPhone(clientEntity.getClientPhone());
-        clientDto.setClientAddress(clientEntity.getClientAddress());
-        clientDto.setClientCreatedAt(clientEntity.getCreatedAt());
-        return clientDto;
+    public ClientResponseDTO toDTO(ClientEntity entity) {
+        return ClientResponseDTO.builder()
+                .email(entity.getEmail())
+                .name(entity.getName())
+                .phone(entity.getPhone())
+                .address(entity.getAddress())
+                .build();
     }
 }
